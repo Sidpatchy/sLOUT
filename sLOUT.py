@@ -65,10 +65,11 @@ def listBots():
 #   botName: string, the name of the bot. Can be suplemented by placing the name you would like to use in a file named bot.txt
 #   startup: boolean, when true, it will print done loading and the time. If you are using bot.txt insert lout.readFile('bot.txt') as the third parameter or just insert the bot name as a string.
 def log(startTime, processName, botName=True, startup=False):
-    if botName == True:
-        botName == readConfig('romebot.config', 'botName')
-
     if startup == True:
+        # read the botname from the config
+        if botName == True:
+            botName == readConfig('*.bot', 'botName')                           # This is very dangerous...
+
         # Console Stuff
         print('--------------{}---------------'.format(botName))                # Divder in the console
         print('Time since startup: {}'.format(DT.datetime.now() - startTime))   # Prints how long it has been since the bot was started
@@ -83,6 +84,10 @@ def log(startTime, processName, botName=True, startup=False):
         writeFile('{}Logs.txt'.format(botName), 'Done Loading!\n')
 
     elif startup == False:
+        # read the botname from the config
+        if botName == True:
+            botName == readConfig('*.bot', 'botName')                           # This is very dangerous... I hope no one who uses this has any files that end in .bot
+
         # Console Stuff
         print('--------------{}---------------'.format(botName))                # Divder in the console
         print('Current Time: {}'.format(DT.datetime.now()))                     # Prints the current time
@@ -110,5 +115,4 @@ def readConfig(file, parameter):
             parameter = i.replace('{} = '.format(parameter), '')
             parameter = parameter.replace('\n', '')
             parameter = parameter.replace(' ', '')
-            writeFile('nut.txt', parameter)
             return parameter
