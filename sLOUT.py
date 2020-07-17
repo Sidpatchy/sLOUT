@@ -1,4 +1,4 @@
-# sLOUT by Sidpatchy v0.1-a6
+# sLOUT by Sidpatchy v0.1-a8
 # This is a WIP version of what can be found in Sidpatchy's Library of Useful Tools, the library can be found on GitHub
 
 import os
@@ -25,8 +25,8 @@ def writeFile(file, string, time=False):
 def readFile(file):
     f = open(file, 'r')
     contents = f.read()
-    return contents
     f.close()
+    return contents
 
 # reads the bot token from token.txt
 # Usage:
