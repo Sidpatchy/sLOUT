@@ -1,4 +1,4 @@
-# sLOUT by Sidpatchy v0.1-a9
+# sLOUT by Sidpatchy v0.1-a10
 # This was originally intended to be used in a (currently) unreleased discord bot maker. However, I have slowly built more and more functions into it. Now it is integrated in many of my projects.
 # If you experience any issues, please open an issue on the GitHub: https://github.com/Sidpatchy/sLOUT
 
@@ -6,6 +6,8 @@ import os
 import datetime as DT
 import platform
 import glob
+from time import sleep
+import yaml
 
 version = 'v0.1-a-9'
 
@@ -23,9 +25,9 @@ def writeFile(file, string, time=False):
         f.write('\n')
         f.close()
     except:
-        print('ERROR: Failed to read file. Make sure your user has permission to write to the file \'{}\'. If you have the correct permissions, please open an issue here: https://github.com/Sidpatchy/sLOUT'.format(file))
-        writeFile('sLOUT-error.txt', 'ERROR: Failed to read file. Make sure your user has permission to write to the file \'{}\'. If you have the correct permissions, please open an issue here: https://github.com/Sidpatchy/sLOUT'.format(file), True)
-
+        print('ERROR: Failed to write file. Make sure your user has permission to write to the file \'{}\'. If you have the correct permissions, please open an issue here: https://github.com/Sidpatchy/sLOUT'.format(file))
+        writeFile('sLOUT-error.txt', 'ERROR: Failed to write file. Make sure your user has permission to write to the file \'{}\'. If you have the correct permissions, please open an issue here: https://github.com/Sidpatchy/sLOUT'.format(file), True)
+        sleep(5)
 
 # readFile() reads a file
 # Usage:
@@ -39,6 +41,7 @@ def readFile(file):
     except:
         print('ERROR: Failed to read file. Make sure your user has permission to read the file \'{}\'. If you have the correct permissions, please open an issue here: https://github.com/Sidpatchy/sLOUT'.format(file))
         writeFile('sLOUT-error.txt', 'ERROR: Failed to read file. Make sure your user has permission to read the file \'{}\'. If you have the correct permissions, please open an issue here: https://github.com/Sidpatchy/sLOUT'.format(file), True)
+        sleep(5)
 
 # fetchToken() reads the bot token from token.txt
 # Usage:
@@ -58,7 +61,8 @@ def clearScreen():
             print('       Please include the information below in a GitHub issue, along with your actual OS. https://github.com/Sidpatchy/sLOUT')
             print('       Detected OS: {}'.format(OS))
             writeFile('sLOUT-error.txt', 'ERROR: Unable to clear screen \n       Please include the information below in a GitHub issue, along with your actual OS. https://github.com/Sidpatchy/sLOUT \n       Detected OS: {} \n       sLOUT version: {}'.format(OS, version), True)
-            
+            sleep(5)
+
     elif OS.upper() == 'WINDOWS':
         try:
             os.system('cls')            # Runs the command 'cls'
@@ -68,10 +72,11 @@ def clearScreen():
             print('       Detected OS: {}'.format(OS))
             print('       sLOUT version: {}'.format(version))
             writeFile('sLOUT-error.txt', 'ERROR: Unable to clear screen \n       Please include the information below in a GitHub issue, along with your actual OS. https://github.com/Sidpatchy/sLOUT \n       Detected OS: {} \n       sLOUT version: {}'.format(OS, version), True)
-
+            sleep(5)
     else:
         print('ERROR: The OS I detected ({}) is not supported. Please open a GitHub issue here: https://github.com/Sidpatchy/sLOUT')
         writeFile('sLOUT-error.txt', 'ERROR: The OS I detected ({}) is not supported. Please open a GitHub issue here: https://github.com/Sidpatchy/sLOUT')
+        sleep(5)
 
 # writePy() essentially writeFile but targets a python fle in the directory bots/
 # Usage:
@@ -89,6 +94,7 @@ def writePy(file, string, time=False):
     except:
         print('ERROR: Failed to read file. Make sure your user has permission to write to the file \'bots/{}.py\'. If you have the correct permissions, please open an issue here: https://github.com/Sidpatchy/sLOUT'.format(file))
         writeFile('sLOUT-error.txt', 'ERROR: Failed to read file. Make sure your user has permission to write to the file \'bots/{}.py\'. If you have the correct permissions, please open an issue here: https://github.com/Sidpatchy/sLOUT'.format(file), True)
+        sleep(5)
 
 # fetchBots() returns all python files in the directory bots/
 def fetchBots():
@@ -105,18 +111,12 @@ def listBots():
 #   processName: string, the name of the command/process that was run
 #   botName: string, the name of the bot. Can be suplemented by placing the name you would like to use in a file named bot.txt
 #   startup: boolean, when true, it will print done loading and the time. If you are using bot.txt insert lout.readFile('bot.txt') as the third parameter or just insert the bot name as a string.
-botName = None
-def log(startTime=DT.datetime.now(), processName='Unknown', name=True, startup=False):
-    global botName              # There is no reason for this to be like this. However, if it isn't a global variable, the automated selection system breaks
+def log(file, startTime=DT.datetime.now(), processName='Unknown', name=True, startup=False):
     if startup == True:
-        # read the botname from the config
-        if name == True:
-            botName == readConfig('*.bot', 'botName')                           # This is potentially dangerous... I recommend switching this to the config file of the bot you will be using for now
-        else:
-            botName = 'ERROR'
-            writeFile('sLOUT-error.txt', 'Bot name was unable to be read from file', True)
-            print('Please check sLOUT-error.txt for more details.')
 
+        # read the botname from the config
+        botName = readConfig(file, 'botName')
+        
         # Console Stuff
         print('--------------{}---------------'.format(botName))                # Divder in the console
         print('Time since startup: {}'.format(DT.datetime.now() - startTime))   # Prints how long it has been since the bot was started
@@ -132,20 +132,11 @@ def log(startTime=DT.datetime.now(), processName='Unknown', name=True, startup=F
             writeFile('{}Logs.txt'.format(botName), 'Done Loading!\n')
         except:
             print('ERROR: Unable to write to log file \'{}Logs.txt\'.'.format(botName))
+            sleep(5)
 
     elif startup == False:
         # read the botname from the config
-        if name == True:
-            botName == readConfig('*.bot', 'botName')                           # This is potentially dangerous... I hope no one who uses this has any files that end in .bot
-        else:
-            botName = 'ERROR'
-            try:
-                writeFile('sLOUT-error.txt', 'Bot name was unable to be read from file', True)
-                print('Please check sLOUT-error.txt for more details.')
-            except:
-                print('ERROR: If you are seeing this error, the problem you are experiencing is almost certainly related to my ability to read and write files. Please allow me read and write files and then try again. You\'re on your own now. Good luck!')
-                print('ERROR: Unable to write to \'sLOUT-error.txt\'... Writing to console instead')
-                print('Bot name was unable to be read from file.')
+        botName = readConfig(file, 'botName')
 
         # Console Stuff
         print('--------------{}---------------'.format(botName))                # Divder in the console
@@ -161,7 +152,8 @@ def log(startTime=DT.datetime.now(), processName='Unknown', name=True, startup=F
             writeFile('{}Logs.txt'.format(botName), 'Time to run: {}'.format((DT.datetime.now() - startTime)))
             writeFile('{}Logs.txt'.format(botName), '{} was run\n'.format(processName))
         except:
-            print('ERROR: Unable to write to log file \'{}\'.')
+            print('ERROR: Unable to write to log file \'{}Logs.txt\'.'.format(botName))
+            sleep(5)
 
 # readConfig() configuration reader
 # Usage:
@@ -170,15 +162,10 @@ def log(startTime=DT.datetime.now(), processName='Unknown', name=True, startup=F
 # Structure of config file:
 # parameter = put stuff here
 def readConfig(file, parameter):
-    f = open(file)
-    lines = f.readlines()
-    for i in lines:
-        if parameter in i:
-            parameter = i.replace('{} = '.format(parameter), '')
-            parameter = parameter.replace('\n', '')
-            parameter = parameter.replace(' ', '')
-            return parameter
+    with open(file) as f:
+        config = yaml.safe_load(f)
+    return config[parameter]
 
-# time() simple method to get time that requires less typing than DT.datetime.now()
+# time() simple method to get time that requires less typing than datetime.datetime.now()
 def time():
     return DT.datetime.now()
