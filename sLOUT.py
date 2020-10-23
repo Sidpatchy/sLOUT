@@ -9,7 +9,7 @@ import glob
 from time import sleep
 import yaml
 
-version = 'v0.1-a-9'
+version = 'v0.1-a-10'
 
 # writeFile() writes a string to the specified file
 # Usage:
