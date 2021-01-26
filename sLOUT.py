@@ -1,4 +1,4 @@
-# sLOUT by Sidpatchy v0.1
+# sLOUT by Sidpatchy v0.2
 # This was originally intended to be used in a (currently) unreleased discord bot maker. However, I have slowly built more and more functions into it. Now it is integrated in many of my projects.
 # If you experience any issues, please open an issue on the GitHub: https://github.com/Sidpatchy/sLOUT
 
@@ -9,7 +9,7 @@ import glob
 from time import sleep
 import yaml
 
-version = 'v0.1'
+version = 'v0.2'
 
 # writeFile() writes a string to the specified file
 # Usage:
@@ -156,6 +156,21 @@ def readConfig(file, parameter):
     with open(file) as f:
         config = yaml.safe_load(f)
     return config[parameter]
+
+# writeConfig() configuration writer
+# WARNING: Strips all comments
+# Usage:
+#   file: string, file to read from
+#   parameter: string, name of "varible" in config file, must be exact.
+#   value: string, new value for "variable" in config file.
+def writeConfig(file, parameter, value):
+    writeFile(file, "{}:".format(parameter))
+    with open(file) as f:
+        config = yaml.safe_load(f)
+    with open(file, 'w') as f:
+        config[parameter] = value
+        config = yaml.safe_dump(config, f)
+    return True
 
 # time() simple method to get time that requires less typing than datetime.datetime.now()
 def time():
