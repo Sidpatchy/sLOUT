@@ -16,7 +16,7 @@ setup(
 #    python_requires=">=3.4",
 
     classifiers=[
-        'Development Status :: 3 - Alpha'
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Other Audience',
         'License :: OSI Approved :: MIT License',
         'Operating System :: POSIX :: Linux',
