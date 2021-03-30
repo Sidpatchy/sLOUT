@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='sLOUT',
-    version='0.3.0',
+    version='0.4.0',
     description='A small helper library used in several of my projects',
     url='https://github.com/Sidpatchy/sLOUT',
     author='Sidpatchy',

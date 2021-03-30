@@ -12,14 +12,16 @@ from .readConfig import readConfig
 
 # log()
 # Usage:
+#   file: string, location of config file. (This should be moved but won't be to preserve backwards compatability)
 #   startTime: the time the command was initiated at, use a variable formed using datetime. import datetime and then use datetime.datetime.now()
 #   processName: string, the name of the command/process that was run
-#   botName: string, the name of the bot. Can be suplemented by placing the name you would like to use in a file named bot.txt
-#   startup: boolean, when true, it will print done loading and the time. If you are using bot.txt insert lout.readFile('bot.txt') as the third parameter or just insert the bot name as a string.
-def log(file, startTime=DT.datetime.now(), processName='Unknown', name=True, startup=False):
+#   name: string, the name of the bot/project/whatever. Can be suplemented by placing the name you would like to use in a config file (specified by file)
+#   startup: boolean, when true, it will print done loading and the time. Process name and name not required, can be set to None or ignored.
+#   disableWarnings: boolean, set to true to disable warnings about issues writing to a log file.
+def log(file, startTime=DT.datetime.now(), processName='Unknown', name=True, startup=False, disableWarnings=False):
     if startup == True:
 
-        # read the botname from the config
+        # read the botName from the config
         botName = readConfig(file, 'botName')
         
         # Console Stuff
@@ -36,11 +38,14 @@ def log(file, startTime=DT.datetime.now(), processName='Unknown', name=True, sta
             writeFile('{}Logs.txt'.format(botName), 'Current Time: {}'.format(DT.datetime.now()))
             writeFile('{}Logs.txt'.format(botName), 'Done Loading!\n')
         except:
-            print('ERROR: Unable to write to log file \'{}Logs.txt\'.'.format(botName))
-            sleep(5)
+            if disableWarnings:
+                pass
+            if not disableWarnings:
+                print('ERROR: Unable to write to log file \'{}Logs.txt\'.'.format(botName))
+                sleep(5)
 
     elif startup == False:
-        # read the botname from the config
+        # read the botName from the config
         botName = readConfig(file, 'botName')
 
         # Console Stuff
@@ -55,7 +60,10 @@ def log(file, startTime=DT.datetime.now(), processName='Unknown', name=True, sta
             writeFile('{}Logs.txt'.format(botName), '\n--------------{}---------------'.format(botName))
             writeFile('{}Logs.txt'.format(botName), 'Current Time: {}'.format(DT.datetime.now()))
             writeFile('{}Logs.txt'.format(botName), 'Time to run: {}'.format((DT.datetime.now() - startTime)))
-            writeFile('{}Logs.txt'.format(botName), '{} was run\n'.format(processName))
+            writeFile('{}Logs.txt'.format(botName), '{}\n'.format(processName))
         except:
-            print('ERROR: Unable to write to log file \'{}Logs.txt\'.'.format(botName))
-            sleep(5)
+            if disableWarnings:
+                pass
+            if not disableWarnings:
+                print('ERROR: Unable to write to log file \'{}Logs.txt\'.'.format(botName))
+                sleep(5)

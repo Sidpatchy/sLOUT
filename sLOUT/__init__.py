@@ -2,7 +2,7 @@
 # A small helper library used in several of my projects
 # If you experience any issues, please open an issue on the GitHub: https://github.com/Sidpatchy/sLOUT
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 __author__ = "Sidpatchy"
 
 from .writeFile import writeFile
