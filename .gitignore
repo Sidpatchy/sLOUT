@@ -1,2 +1,5 @@
 
 *.pyc
+.idea/
+sLOUT.egg-info/
+venv/
